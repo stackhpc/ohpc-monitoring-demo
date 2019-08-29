@@ -75,7 +75,7 @@ prometheus_scrape_configs:
       - "status.updates.coreos.stg.fedoraproject.org"
 
 alertmanager_external_url: "http://{{ ansible_host }}:9093"
-alertmanager_slack_api_url: "http://example.org"
+alertmanager_slack_api_url: "{{ vault_slack_webhook }}"
 alertmanager_receivers:
 - name: slack
   slack_configs:

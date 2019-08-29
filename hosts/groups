@@ -1,0 +1,11 @@
+# empty declaration
+[ohpc_login]
+
+[prometheus:children]
+ohpc_login
+
+[grafana:children]
+ohpc_login
+
+# FIXME: we won't use this
+[web]
