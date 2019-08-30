@@ -14,6 +14,9 @@ prometheus_targets:
         "{{ groups['all'] | map('extract', hostvars, ['ansible_host']) | map('regex_replace', '$', ':9100') | list }}"
       labels:
         env: demo
+  slurm:
+    - targets:
+         "{{ groups['cluster_login'] | map('extract', hostvars, ['ansible_host']) | map('regex_replace', '$', ':1234') | list }}"
   alertmanager:
     - targets:
       - "{{ ansible_host }}:9093"
@@ -73,6 +76,12 @@ prometheus_scrape_configs:
   static_configs:
     - targets:
       - "status.updates.coreos.stg.fedoraproject.org"
+- job_name: slurm
+  scrape_interval: 30s
+  scrape_timeout: 30s
+  file_sd_configs:
+  - files:
+    - "/etc/prometheus/file_sd/slurm.yml"
 
 alertmanager_external_url: "http://{{ ansible_host }}:9093"
 alertmanager_slack_api_url: "{{ vault_slack_webhook }}"
@@ -112,4 +121,7 @@ grafana_dashboards:
     datasource: '{{ grafana_datasources.0.name }}'
   - dashboard_id: '4271'
     revision_id: '4'
+    datasource: '{{ grafana_datasources.0.name }}'
+  - dashboard_id: '4323'
+    revision_id: '2'
     datasource: '{{ grafana_datasources.0.name }}'

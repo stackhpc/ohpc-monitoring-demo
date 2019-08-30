@@ -5,6 +5,15 @@
   tags:
     - node_exporter
 
+- name: Deploy slurm_exporter
+  hosts: cluster_control
+  vars:
+    slurm_exporter_web_listen_address: 0.0.0.0:1234
+  roles:
+    - stackhpc.ansible_slurm_exporter
+  tags:
+    - slurm_exporter
+
 - name: Setup core monitoring software
   hosts: prometheus
   roles:

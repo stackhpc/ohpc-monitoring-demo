@@ -4,6 +4,8 @@
 - name: cloudalchemy.prometheus
 - name: cloudalchemy.alertmanager
 - name: cloudalchemy.grafana
+- src: https://github.com/stackhpc/ansible-slurm-exporter
+  name: stackhpc.ansible_slurm_exporter
 
 # EXTRAS
 - name: antoiner77.caddy
