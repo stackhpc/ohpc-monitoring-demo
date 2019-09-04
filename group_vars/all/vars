@@ -115,3 +115,7 @@ grafana_dashboards:
   - dashboard_id: '4323'
     revision_id: '2'
     datasource: '{{ grafana_datasources.0.name }}'
+  # openHPC dashboard
+  - dashboard_id: '10809'
+    revision_id: '2'
+    datasource: '{{ grafana_datasources.0.name }}'
