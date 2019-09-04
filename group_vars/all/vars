@@ -13,7 +13,7 @@ prometheus_targets:
     - targets:
         "{{ groups['all'] | map('extract', hostvars, ['ansible_host']) | map('regex_replace', '$', ':9100') | list }}"
       labels:
-        env: demo
+        cluster: euclid
   slurm:
     - targets:
          "{{ groups['cluster_login'] | map('extract', hostvars, ['ansible_host']) | map('regex_replace', '$', ':1234') | list }}"
@@ -21,12 +21,15 @@ prometheus_targets:
     - targets:
       - "{{ ansible_host }}:9093"
       labels:
-        env: demo
+        cluster: euclid
   grafana:
     - targets:
       - "{{ ansible_host }}:3000"
       labels:
-        env: demo
+        cluster: euclid
+  ceph:
+    - targets:
+        - "euclid-cam-proxy-0:9283"
 
 prometheus_scrape_configs:
 - job_name: "prometheus"
@@ -72,7 +75,13 @@ prometheus_scrape_configs:
   file_sd_configs:
   - files:
     - "/etc/prometheus/file_sd/slurm.yml"
-
+- job_name: ceph
+  scrape_interval: 30s
+  scrape_timeout: 30s
+  file_sd_configs:
+  - files:
+    - "/etc/prometheus/file_sd/ceph.yml"
+    
 alertmanager_external_url: "http://{{ ansible_host }}:9093"
 alertmanager_slack_api_url: "{{ vault_slack_webhook }}"
 alertmanager_receivers:
@@ -117,5 +126,9 @@ grafana_dashboards:
     datasource: '{{ grafana_datasources.0.name }}'
   # openHPC dashboard
   - dashboard_id: '10809'
+    revision_id: '2'
+    datasource: '{{ grafana_datasources.0.name }}'
+  # Ceph cluster overview
+  - dashboard_id: '7056'
     revision_id: '2'
     datasource: '{{ grafana_datasources.0.name }}'
