@@ -9,6 +9,3 @@
 - src: https://github.com/stackhpc/ansible-sockpuppet
   name: stackhpc.sockpuppet
 
-# EXTRAS
-- name: antoiner77.caddy
-#  version: v2.0.4
