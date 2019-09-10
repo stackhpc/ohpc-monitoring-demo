@@ -16,7 +16,7 @@ prometheus_targets:
         cluster: euclid
   slurm:
     - targets:
-         "{{ groups['cluster_login'] | map('extract', hostvars, ['ansible_host']) | map('regex_replace', '$', ':1234') | list }}"
+         "{{ groups['slurm_exporter'] | map('extract', hostvars, ['ansible_host']) | map('regex_replace', '$', ':1234') | list }}"
   alertmanager:
     - targets:
       - "{{ ansible_host }}:9093"
@@ -29,7 +29,9 @@ prometheus_targets:
         cluster: euclid
   ceph:
     - targets:
-        - "euclid-cam-proxy-0:9283"
+        "{{ groups['ceph_mgr'] | map('extract', hostvars, ['ansible_host']) | map('regex_replace', '$', ':9283') | list }}"
+      labels:
+        cluster: euclid
 
 prometheus_scrape_configs:
 - job_name: "prometheus"
@@ -88,7 +90,7 @@ alertmanager_receivers:
 - name: slack
   slack_configs:
   - send_resolved: true
-    channel: '#dell-alerts'
+    channel: '#euclid-alerts'
 alertmanager_route:
   group_by: ['alertname', 'cluster', 'service']
   group_wait: 30s

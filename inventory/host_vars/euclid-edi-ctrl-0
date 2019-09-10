@@ -1,0 +1,3 @@
+
+prometheus_db_dir: /data/prometheus
+grafana_data_dir: /data/grafana

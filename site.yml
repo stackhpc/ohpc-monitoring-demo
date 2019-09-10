@@ -6,7 +6,7 @@
     - node_exporter
 
 - name: Deploy slurm_exporter
-  hosts: cluster_control
+  hosts: slurm_exporter
   vars:
     slurm_exporter_web_listen_address: 0.0.0.0:1234
   roles:

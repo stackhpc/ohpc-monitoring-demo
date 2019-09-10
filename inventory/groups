@@ -1,0 +1,11 @@
+[prometheus]
+euclid-edi-ctrl-0
+
+[grafana]
+euclid-edi-ctrl-0
+
+[ceph_mgr]
+euclid-edi-ctrl-0
+
+[slurm_exporter]
+euclid-edi-ctrl-0
