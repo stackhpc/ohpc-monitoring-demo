@@ -6,6 +6,8 @@
 - name: cloudalchemy.grafana
 - src: https://github.com/stackhpc/ansible-slurm-exporter
   name: stackhpc.ansible_slurm_exporter
+- src: https://github.com/stackhpc/ansible-sockpuppet
+  name: stackhpc.sockpuppet
 
 # EXTRAS
 - name: antoiner77.caddy

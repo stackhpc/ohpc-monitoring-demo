@@ -9,3 +9,9 @@ euclid-edi-ctrl-0
 
 [slurm_exporter]
 euclid-edi-ctrl-0
+
+[sockpuppet:children]
+cluster_gw
+cluster_ceph_osd
+cluster_ceph_mon
+cluster_ceph_mds

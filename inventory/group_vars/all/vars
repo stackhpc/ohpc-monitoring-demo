@@ -33,6 +33,24 @@ prometheus_targets:
       labels:
         cluster: euclid
 
+  sockpuppet:
+    - targets:
+        "{{ groups['cluster_gw'] | map('extract', hostvars, ['ansible_host']) | map('regex_replace', '$', ':30000') | list }}"
+      labels:
+        group: cluster_gw
+    - targets:
+        "{{ groups['cluster_ceph_osd'] | map('extract', hostvars, ['ansible_host']) | map('regex_replace', '$', ':30000') | list }}"
+      labels:
+        group: cluster_ceph_osd
+    - targets:
+        "{{ groups['cluster_ceph_mon'] | map('extract', hostvars, ['ansible_host']) | map('regex_replace', '$', ':30000') | list }}"
+      labels:
+        group: cluster_ceph_mon
+    - targets:
+        "{{ groups['cluster_ceph_mds'] | map('extract', hostvars, ['ansible_host']) | map('regex_replace', '$', ':30000') | list }}"
+      labels:
+        group: cluster_ceph_mds
+
 prometheus_scrape_configs:
 - job_name: "prometheus"
   metrics_path: "/metrics"
@@ -83,7 +101,13 @@ prometheus_scrape_configs:
   file_sd_configs:
   - files:
     - "/etc/prometheus/file_sd/ceph.yml"
-    
+- job_name: sockpuppet
+  scrape_interval: 30s
+  scrape_timeout: 30s
+  file_sd_configs:
+  - files:
+    - "/etc/prometheus/file_sd/sockpuppet.yml"
+
 alertmanager_external_url: "http://{{ ansible_host }}:9093"
 alertmanager_slack_api_url: "{{ vault_slack_webhook }}"
 alertmanager_receivers:

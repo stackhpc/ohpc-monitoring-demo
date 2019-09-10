@@ -14,6 +14,17 @@
   tags:
     - slurm_exporter
 
+- name: Deploy sockpuppet
+  hosts: sockpuppet
+  vars:
+    sockpuppet_listen_address: 0.0.0.0
+    sockpuppet_listen_port: 30000
+    sockpuppet_config_template: templates/sockpuppet_config.py
+  roles:
+    - stackhpc.sockpuppet
+  tags:
+    - sockpuppet
+
 - name: Setup core monitoring software
   hosts: prometheus
   roles:
