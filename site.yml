@@ -1,3 +1,15 @@
+- name: Determine internal IP
+  hosts: all
+  any_errors_fatal: true
+  tasks:
+    - set_fact:
+        # NOTE(wszumski): This came from euclid-saas/ansible/roles/cluster_setup/tasks/hosts.yml, don't
+        # blame me if it makes your eyes bleed
+        prometheus_exporter_listen_address: >-
+          {% if hostvars[inventory_hostname]['infra_intranet_interface'] is defined %}{{ hostvars[inventory_hostname][hostvars[inventory_hostname]['infra_intranet_interface']]['ipv4']['address'] }}{% else %}{{ hostvars[inventory_hostname]['ansible_default_ipv4']['address'] }}{% endif %}
+  tags:
+    - always
+
 - name: Deploy node_exporter
   hosts: all
   roles:
@@ -8,7 +20,7 @@
 - name: Deploy slurm_exporter
   hosts: slurm_exporter
   vars:
-    slurm_exporter_web_listen_address: 0.0.0.0:1234
+    slurm_exporter_web_listen_address: "{{ prometheus_exporter_listen_address }}:1234"
   roles:
     - stackhpc.ansible_slurm_exporter
   tags:
@@ -17,7 +29,7 @@
 - name: Deploy sockpuppet
   hosts: sockpuppet
   vars:
-    sockpuppet_listen_address: 0.0.0.0
+    sockpuppet_listen_address: "{{ prometheus_exporter_listen_address }}"
     sockpuppet_listen_port: 30000
     sockpuppet_config_template: templates/sockpuppet_config.py
   roles:
