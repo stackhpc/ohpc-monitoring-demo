@@ -13,7 +13,8 @@ flow_definitions = [
             },
         ],
     },
-{% elif inventory_hostname in groups["cluster_ceph_osd"] %}
+{% endif %}
+{% if inventory_hostname in groups["cluster_ceph_osd"] %}
     # run this on the compute nodes
     {
         "class": "ceph",
@@ -38,7 +39,8 @@ flow_definitions = [
             },
         ]
     },
-{% elif inventory_hostname in groups["cluster_ceph_mon"] %}
+{% endif %}
+{% if inventory_hostname in groups["cluster_ceph_mon"] %}
     # run this on the monitor nodes
     {
         "class": "ceph",
@@ -53,7 +55,8 @@ flow_definitions = [
             },
         ]
     },
-{% elif inventory_hostname in groups["cluster_ceph_mds"] %}
+{% endif %}
+{% if inventory_hostname in groups["cluster_ceph_mds"] %}
     # run this on the mds nodes
     {
         "class": "ceph",
