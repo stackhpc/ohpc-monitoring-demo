@@ -7,6 +7,8 @@
         # blame me if it makes your eyes bleed
         prometheus_exporter_listen_address: >-
           {% if hostvars[inventory_hostname]['infra_intranet_interface'] is defined %}{{ hostvars[inventory_hostname][hostvars[inventory_hostname]['infra_intranet_interface']]['ipv4']['address'] }}{% else %}{{ hostvars[inventory_hostname]['ansible_default_ipv4']['address'] }}{% endif %}
+    - debug:
+       var: prometheus_exporter_listen_address
   tags:
     - always
 

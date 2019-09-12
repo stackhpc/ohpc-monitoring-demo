@@ -10,10 +10,13 @@ prometheus_alertmanager_config:
       - targets:
         - "{{ prometheus_exporter_listen_address }}:9093"
 
+# remove localhost from all group
+__all_groups: "{{ groups['all'] | select('match', '^(?!localhost).*') | list }}"
+
 prometheus_targets:
   node:
     - targets:
-        "{{ groups['all'] | map('extract', hostvars, ['prometheus_exporter_listen_address']) | map('regex_replace', '$', ':9100') | list }}"
+        "{{ __all_groups | map('extract', hostvars, ['prometheus_exporter_listen_address']) | map('regex_replace', '$', ':9100') | list }}"
       labels:
         cluster: euclid
   slurm:
