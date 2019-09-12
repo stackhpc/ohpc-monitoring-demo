@@ -163,3 +163,7 @@ grafana_dashboards:
   - dashboard_id: '7056'
     revision_id: '2'
     datasource: '{{ grafana_datasources.0.name }}'
+  # Socket stats dashboard
+  - dashboard_id: '10847'
+    revision_id: '1'
+    datasource: '{{ grafana_datasources.0.name }}'
