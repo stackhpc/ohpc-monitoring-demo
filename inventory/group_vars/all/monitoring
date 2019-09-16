@@ -165,5 +165,5 @@ grafana_dashboards:
     datasource: '{{ grafana_datasources.0.name }}'
   # Socket stats dashboard
   - dashboard_id: '10847'
-    revision_id: '1'
+    revision_id: '3'
     datasource: '{{ grafana_datasources.0.name }}'
