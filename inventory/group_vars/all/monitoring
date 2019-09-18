@@ -37,7 +37,11 @@ prometheus_targets:
         "{{ groups['ceph_mgr'] | map('extract', hostvars, ['prometheus_exporter_listen_address']) | map('regex_replace', '$', ':9283') | list }}"
       labels:
         cluster: euclid
-
+  process:
+    - targets:
+        "{{ __all_groups | map('extract', hostvars, ['prometheus_exporter_listen_address']) | map('regex_replace', '$', ':9256') | list }}"
+      labels:
+        cluster: euclid
   sockpuppet:
     - targets:
         "{{ groups['cluster_gw'] | map('extract', hostvars, ['prometheus_exporter_listen_address']) | map('regex_replace', '$', ':30000') | list }}"
@@ -112,6 +116,13 @@ prometheus_scrape_configs:
   file_sd_configs:
   - files:
     - "/etc/prometheus/file_sd/sockpuppet.yml"
+- job_name: process
+  metrics_path: "/metrics"
+  scrape_interval: 30s
+  scrape_timeout: 30s
+  file_sd_configs:
+  - files:
+    - "/etc/prometheus/file_sd/process.yml"
 
 alertmanager_external_url: "http://{{ prometheus_external_address }}:9093"
 alertmanager_slack_api_url: "{{ vault_slack_webhook }}"
@@ -167,3 +178,27 @@ grafana_dashboards:
   - dashboard_id: '10847'
     revision_id: '3'
     datasource: '{{ grafana_datasources.0.name }}'
+  # Example Process exporter dash
+  - dashboard_id: '249'
+    revision_id: '2'
+    datasource: '{{ grafana_datasources.0.name }}'
+  # Per host Process exporter dash
+  - dashboard_id: '6033'
+    revision_id: '4'
+    datasource: '{{ grafana_datasources.0.name }}'
+
+# Process names
+# "raw" section is needed to avoid attempted interpretation
+# of process-exporter Template varables (like {{.Comm}})
+process_exporter_names: |
+  {% raw %}
+    - name: "{{.Comm}}"
+      comm:
+        - ceph-osd
+        - ceph-crash
+        - ceph-msgr
+        - ceph-watch-noti
+        - ceph-mon
+        - ceph-mgr
+        - ceph-mds
+  {% endraw %}

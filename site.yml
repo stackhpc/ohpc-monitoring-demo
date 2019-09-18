@@ -19,6 +19,13 @@
   tags:
     - node_exporter
 
+- name: Deploy process_exporter
+  hosts: all
+  roles:
+    - cloudalchemy.process_exporter
+  tags:
+    - process_exporter
+
 - name: Deploy slurm_exporter
   hosts: slurm_exporter
   vars:
