@@ -5,7 +5,9 @@ euclid-edi-ctrl-0
 euclid-edi-ctrl-0
 
 [ceph_mgr]
+euclid-ral-proxy-0
 euclid-edi-ctrl-0
+euclid-cam-proxy-0
 
 [slurm_exporter]
 euclid-edi-ctrl-0
