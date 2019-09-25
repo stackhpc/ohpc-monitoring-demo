@@ -60,6 +60,9 @@ prometheus_targets:
       labels:
         group: cluster_ceph_mds
 
+prometheus_config_flags_extra:
+  web.enable-admin-api:
+
 prometheus_scrape_configs:
 - job_name: "prometheus"
   metrics_path: "/metrics"
